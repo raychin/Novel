@@ -12,13 +12,25 @@ def requestNovelText(req_url, req_header):
     r = requests.get(req_url, params = req_header)
     # soup转换
     soup = BeautifulSoup(r.text, "html.parser")
-    # 获取章节名称                                
-    section_name = soup.find("div", class_="bookname").find("h1").text
+
+
+    ''' 方式一，通过匹配获取
+    # 获取章节名称              
+    section_name = soup.find("div", class_ = "bookname").find("h1").text
     # 获取章节文本
-    section_text = soup.find("div", id="content")
+    section_text = soup.find("div", id = "content")
     [s.extract() for s in section_text('script')]    #删除无用项
+    '''
+
+    #''' 方式二，通过标签层级获取
+    # 获取章节名称                  
+    section_name = soup.select('#wrapper .content_read .box_con .bookname h1')[0].text
+    # 获取章节文本
+    section_text = soup.select('#wrapper .content_read .box_con #content')[0]
+    for ss in section_text.select("script"):                #删除无用项
+        ss.decompose()
+    #'''
+
     # 按照指定格式替换章节内容，运用正则表达式
     section_text = re.sub( '\s+', '\r\n\t', section_text.text).strip('\r\n')
-    #print('章节名:' + section_name)
-    #print('章节内容：\n' + section_text)
     return section_name, section_text

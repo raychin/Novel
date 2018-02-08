@@ -31,6 +31,14 @@ req_url = req_url_base + "62416/"                 # 单独一本小说地址
 txt_section = '3267076.html'                      # 某一章页面地址
 
 
+def getNovel(novel_url,  header):
+    section_name, section_text = novel_utils.requestNovelText(req_url + str(txt_section), req_header)
+    if(file_utils.openSaveTxt(file_utils.book_path + "\\" + section_name + ".txt", section_name, section_text)):
+        print('文本内容：\n' + file_utils.readTxt(file_utils.book_path + "\\" + section_name + ".txt"))
+    else:
+        print('保存失败')
+
+
 def main():
     '''
     主函数
@@ -39,22 +47,24 @@ def main():
     file_utils.mkdir(file_utils.root_path)
     # 创建下载书籍存放文件夹
     file_utils.mkdir(file_utils.book_path)
+    
     print('开启线程')
     # 创建线程
     try:
-        t1 = threading.Thread(target = novel_utils.requestNovelText, args = (req_url + str(txt_section), req_header, ))
+        t1 = threading.Thread(target = getNovel, args = (req_url + str(txt_section), req_header, ))
         t1.start()
-        t1.join()
     except:
        print("Error: unable to start thread")
     print('线程完成')
 
-    #'''
+    '''
     # 获取小说内容
     section_name, section_text = novel_utils.requestNovelText(req_url + str(txt_section), req_header)
     if(file_utils.openSaveTxt(file_utils.book_path + "\\" + section_name + ".txt", section_name, section_text)):
         print('文本内容：\n' + file_utils.readTxt(file_utils.book_path + "\\" + section_name + ".txt"))
-    #'''
+    else:
+        print('保存失败')
+    '''
 
 if __name__ == '__main__':
     main()
