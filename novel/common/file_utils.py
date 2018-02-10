@@ -5,7 +5,7 @@ import sys
 
 
 py_path = sys.path[0]
-father_path = os.path.abspath(os.path.dirname(py_path) + os.path.sep+".")
+father_path = os.path.abspath(os.path.dirname(py_path) + os.path.sep + ".")
 
 
 # 定义要创建的目录
@@ -52,6 +52,16 @@ def openSaveTxt(path, title, text):
         print(path + ' 文件打开失败')
         flag = False
     fo.close()
+    return flag
+
+# 查询文件是否存在
+def isExistFile(file_path):
+    flag = False
+    try:
+        flag = os.path.exists(file_path)
+    except IOError:
+        print(file_path + ' 文件查询失败')
+        flag = False
     return flag
 
 
