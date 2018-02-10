@@ -44,9 +44,9 @@ def openSaveTxt(path, title, text):
     flag = False
     try:
         fo = open(path, "w")
-        fo.write(title)
+        fo.write(title.encode('UTF-8'))
         fo.write('\n')
-        fo.write(text)
+        fo.write(text.encode('UTF-8'))
         flag = True
     except IOError:
         print(path + ' 文件打开失败')
