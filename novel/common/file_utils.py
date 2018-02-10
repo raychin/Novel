@@ -43,9 +43,9 @@ def mkdir(path):
 def openSaveTxt(path, title, text):
     flag = False
     try:
-        fo = open(path, "w")
-        fo.write(title.encode('UTF-8'))
-        fo.write('\n')
+        fo = open(path, "wb+")
+        # 打开文件方式为wb+时，需要使用encode.bytes。
+        fo.write((title + '\r\n').encode('UTF-8'))
         fo.write(text.encode('UTF-8'))
         flag = True
     except IOError:
